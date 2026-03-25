@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alon demo</title>
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Favicon (suppress 404) -->
+    <link rel="icon" href="data:,">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="hr-demo.css?v=2.0.0">
+</head>
+<body>
+
+    <!-- ================================================================
+         AWS UTILITY BAR
+         ================================================================ -->
+    <div class="aws-utility-bar">
+        <div class="aws-utility-inner">
+            <div class="aws-utility-left">
+                <span class="aws-utility-item">&#127760; English</span>
+                <a href="#" class="aws-utility-link">Contact us</a>
+                <a href="#" class="aws-utility-link">AWS Marketplace</a>
+                <a href="#" class="aws-utility-link">Support</a>
+            </div>
+            <div class="aws-utility-right">
+                <a href="#" class="aws-utility-link">My account</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         AWS NAVIGATION
+         ================================================================ -->
+    <nav class="aws-nav">
+        <div class="aws-nav-inner">
+            <div class="aws-logo" aria-label="Amazon Web Services">
+                <img src="https://fusionnetworking.com/wp-content/uploads/2025/09/Amazon-Web-Services-Logo-White.png" alt="Amazon Web Services" class="aws-logo-img">
+            </div>
+            <div class="aws-nav-links">
+                <a href="#" class="aws-nav-link">Discover AWS</a>
+                <a href="#" class="aws-nav-link">Products</a>
+                <a href="#" class="aws-nav-link">Solutions</a>
+                <a href="#" class="aws-nav-link">Pricing</a>
+                <a href="#" class="aws-nav-link">Resources</a>
+            </div>
+            <div class="aws-nav-actions">
+                <a href="#" class="aws-nav-search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    Search
+                </a>
+                <a href="#" class="aws-nav-signin">Sign in to console</a>
+                <a href="#" class="aws-nav-cta">Create account</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================================================
+         HERO SECTION
+         ================================================================ -->
+    <section class="aws-hero">
+        <div class="aws-hero-content">
+            <div class="aws-hero-badge">Artificial Intelligence (AI)</div>
+            <h1 class="aws-hero-title">AI-Powered Avatar<br>Conversations</h1>
+            <p class="aws-hero-subtitle">Engage in real-time, intelligent conversations with an AI avatar — powered by advanced language models and delivered with low latency at scale.</p>
+            <div class="aws-hero-actions">
+                <button class="aws-btn-primary">Start a conversation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         MAIN CONTENT
+         ================================================================ -->
+    <div class="aws-main">
+        <main class="avatar-section">
+
+            <!-- Scenario Details Panel (hidden, populated by JS) -->
+            <div class="scenario-details" id="scenario-details" style="display: none;"></div>
+
+            <!-- CV Upload Panel (hidden) -->
+            <div class="cv-upload-panel" id="cv-upload-panel" style="display: none;">
+                <div class="cv-upload-header">
+                    <span class="icon">&#128196;</span>
+                    <span>Upload Candidate CV (Optional)</span>
+                </div>
+                <div class="cv-upload-area" id="cv-upload-area">
+                    <input type="file" id="cv-file-input" accept=".pdf" hidden>
+                    <label for="cv-file-input" class="cv-upload-label">
+                        <span class="upload-icon">&#128194;</span>
+                        <span class="upload-text">Click to upload PDF or drag & drop</span>
+                    </label>
+                </div>
+                <div class="cv-status" id="cv-status" style="display: none;">
+                    <span class="cv-filename" id="cv-filename"></span>
+                    <button class="cv-remove-btn" id="cv-remove-btn" title="Remove CV">&#10005;</button>
+                </div>
+                <p class="cv-hint">The avatar will ask questions based on the CV content</p>
+                <button class="btn btn-start-interview" id="start-interview-btn">
+                    <span>&#9654;</span> Start Interview
+                </button>
+            </div>
+
+            <!-- Scenario Picker -->
+            <div class="scenario-picker" id="scenario-picker">
+                <div class="scenario-picker-header">
+                    <h2 class="scenario-picker-title">Practice with AI</h2>
+                    <p class="scenario-picker-subtitle">Choose a scenario to begin your session. The avatar adapts its role, personality, and knowledge to your selection.</p>
+                </div>
+                <div class="scenario-picker-cards">
+
+                    <div class="scenario-pick-card" data-scenario="layoff">
+                        <div class="spc-visual spc-visual--separation">
+                            <div class="spc-badge separation">Separation</div>
+                        </div>
+                        <div class="spc-content">
+                            <h3>Employee Layoff</h3>
+                            <p>You are a manager delivering a layoff notice. The avatar responds as the affected employee — with real emotion and tough questions.</p>
+                            <div class="spc-footer">
+                                <span class="spc-cta">Start this scenario &nbsp;&#8594;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-pick-card" data-scenario="sales-training">
+                        <div class="spc-visual spc-visual--training">
+                            <div class="spc-badge training">Sales Training</div>
+                        </div>
+                        <div class="spc-content">
+                            <h3>AWS Product Knowledge</h3>
+                            <p>You are a sales rep. The avatar plays a senior AWS trainer who quizzes you on services, value props, and competitive positioning.</p>
+                            <div class="spc-footer">
+                                <span class="spc-cta">Start this scenario &nbsp;&#8594;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenario-pick-card" data-scenario="cto-prospect">
+                        <div class="spc-visual spc-visual--prospect">
+                            <div class="spc-badge prospect">Sales Pitch</div>
+                        </div>
+                        <div class="spc-content">
+                            <h3>CTO Discovery Call</h3>
+                            <p>You are an AWS Account Executive. The avatar plays Sam Chen — a skeptical fintech CTO you are pitching cloud migration to.</p>
+                            <div class="spc-footer">
+                                <span class="spc-cta">Start this scenario &nbsp;&#8594;</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="scenario-picker-action" id="scenario-picker-action" style="display:none;">
+                    <button class="aws-btn-begin" id="begin-session-btn">Begin Session &rsaquo;</button>
+                </div>
+            </div>
+
+            <!-- Avatar Container -->
+            <div id="avatar-container"></div>
+
+            <!-- Status Info Panel -->
+            <div class="info-panel">
+                <div class="info-item">
+                    <span class="label">Status</span>
+                    <span class="value" id="status-value">Ready</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Session</span>
+                    <span class="value" id="scenario-value">Active</span>
+                </div>
+            </div>
+
+            <!-- Transcript Panel -->
+            <div class="transcript-panel">
+                <div class="transcript-header">
+                    <h3>Conversation Transcript</h3>
+                    <div class="transcript-actions">
+                        <button class="btn btn-secondary" id="download-btn" disabled>Download TXT</button>
+                        <button class="btn btn-secondary" id="download-md-btn" disabled>Download MD</button>
+                    </div>
+                </div>
+                <div class="transcript-content" id="transcript-content">
+                    <div class="transcript-empty" id="transcript-empty">
+                        Conversation transcript will appear here...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debug Panel -->
+            <details class="debug-panel">
+                <summary>Debug: Last DPP Injection</summary>
+                <pre id="debug-dpp">No DPP injected yet...</pre>
+            </details>
+
+        </main>
+    </div>
+
+    <!-- Report Overlay (full-screen, shown after conversation ends) -->
+    <div id="report-overlay" style="display:none;">
+        <div id="report-overlay-inner"></div>
+    </div>
+
+    <!-- ====================================================================
+         SCRIPTS
+         ==================================================================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="config.local.js"></script>
+    <script src="../kaltura-avatar-sdk.js?v=1.0.0"></script>
+    <script src="hr-demo.js?v=1.0.24"></script>
+</body>
+</html>
