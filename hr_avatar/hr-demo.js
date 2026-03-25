@@ -29,7 +29,7 @@ const CONFIG = Object.freeze({
     FLOW_ID: 'agent-15',
 
     // Call analysis API endpoint (AWS Lambda + API Gateway)
-    ANALYSIS_API_URL: 'http://localhost:10006',
+    ANALYSIS_API_URL: '/api/analyze',
 
     // Delay (ms) after SHOWING_AGENT before injecting DPP
     // This ensures the avatar is fully ready to receive context
@@ -1621,11 +1621,10 @@ Schema: {"deal_likelihood":0-100,"concerns":[{"concern":"str","addressed":"yes|p
 
     try {
         updateStatus('generating report...');
-        const response = await fetch('http://localhost:10006/v1/chat/completions', {
+        const response = await fetch('/api/report', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + (window.APP_CONFIG?.LITELLM_API_KEY || '')
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 model: 'claude-4-5-haiku',
