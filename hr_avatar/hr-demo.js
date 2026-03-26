@@ -1708,6 +1708,9 @@ function renderReport(report) {
                     &#8592; Start New Session
                     <span class="report-back-countdown" id="report-back-countdown">&nbsp;(${COUNTDOWN_SEC}s)</span>
                 </button>
+                <button class="aws-btn-hr-connect">
+                    &#128279;&nbsp; Connect to HR Systems
+                </button>
             </div>
         </div>
     `;

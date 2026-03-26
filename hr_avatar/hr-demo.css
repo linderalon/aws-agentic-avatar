@@ -1723,11 +1723,35 @@ a:hover {
 .report-list--gaps      li::before { content: '!'; color: #d13212; }
 .report-list--recs      li::before { content: '★'; color: var(--aws-blue); }
 
-/* New session button */
+/* New session button row */
 .report-new-session {
     padding: 20px 32px 28px;
     display: flex;
     justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.aws-btn-hr-connect {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1.5px solid #0073bb;
+    background: #fff;
+    color: #0073bb;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.aws-btn-hr-connect:hover {
+    background: #f0f8ff;
+    color: #005a99;
+    border-color: #005a99;
 }
 
 /* Error report header */
