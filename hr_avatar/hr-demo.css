@@ -463,6 +463,10 @@ a:hover {
     background-position: center;
 }
 
+.spc-visual--churn {
+    background: linear-gradient(135deg, #0d2040 0%, #1a3a6b 50%, #0f5c8a 100%);
+}
+
 /* Hover gradient overlay — purple → light blue */
 .spc-visual::after {
     content: '';
@@ -511,6 +515,11 @@ a:hover {
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
+.spc-badge.churn {
+    background: rgba(255, 153, 0, 0.25);
+    color: #fff;
+    border: 1px solid rgba(255, 153, 0, 0.5);
+}
 
 /* ── Card content area ── */
 .spc-content {
@@ -1487,6 +1496,7 @@ a:hover {
 .report-header--separation { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 60%, #6b2d6b 100%); }
 .report-header--training   { background: linear-gradient(135deg, #0a1628 0%, #0d2d4a 60%, #1a4a7a 100%); }
 .report-header--prospect   { background: linear-gradient(135deg, #0d2818 0%, #1a4a2e 60%, #2d6b4a 100%); }
+.report-header--churn      { background: linear-gradient(135deg, #1a0d00 0%, #4a2800 60%, #8a4a00 100%); }
 
 .report-badge {
     display: inline-block;

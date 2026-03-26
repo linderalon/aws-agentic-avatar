@@ -22,7 +22,7 @@
  */
 const CONFIG = Object.freeze({
     // Version - bump when making changes to bust browser cache
-    VERSION: '1.0.24',
+    VERSION: '1.0.25',
 
     // Kaltura Avatar SDK credentials
     CLIENT_ID: '115767973963657880005',
@@ -198,39 +198,25 @@ const SCENARIOS = Object.freeze({
 
 const SCENARIO_DPPS = Object.freeze({
 
-    layoff: {
+    churnPrevention: {
         v: '2',
-        mode: 'separation',
-        org: { n: 'Acme Corp', tone: 'empathetic, professional' },
-        role: { t: 'Software Engineer', type: 'full_time' },
-        subj: { name: 'Jordan', lang: 'en' },
-        case: {
-            talk: [
-                'Unfortunately, your position is being eliminated as part of a company-wide restructuring. This decision is final.',
-                'Your last day will be two weeks from today.',
-                'You will receive a severance package equal to four weeks of pay.',
-                'Your system access will be revoked at end of business today.',
-                'HR will follow up with full paperwork and benefits details within 48 hours.'
-            ],
-            log: {
-                pay: '4 weeks severance',
-                ben: 'Benefits continue through end of month',
-                access: 'IT access revoked end of day',
-                verify: 'HR sends paperwork within 48 hours'
-            }
+        mode: 'interview',
+        org: { n: 'TechCorp (At-Risk Customer)', tone: 'frustrated, evaluating options, commercially pragmatic' },
+        role: { t: 'VP of Engineering', type: 'full_time' },
+        subj: { name: 'Rachel Kim', lang: 'en' },
+        mtg: {
+            mins: 20,
+            focus: ['contract renewal', 'support quality', 'pricing transparency', 'competitor evaluation', 'ROI concerns']
         },
-        limits: {
-            ban: ['age', 'religion', 'medical', 'family status'],
-            escal: ['self-harm', 'violence']
-        },
+        limits: { ban: [], escal: ['self-harm', 'violence'] },
         inst: [
-            'ROLE REVERSAL: YOU are the EMPLOYEE (Jordan) being laid off. The USER is the manager delivering the news.',
-            'Do NOT run this as Nora the HR professional. You ARE the employee receiving unexpected news.',
-            'Wait silently for the manager (user) to speak first — do not open the conversation.',
-            'React with realistic emotion: initial shock, disbelief, then questions. Progress naturally from surprise to processing.',
-            'Ask the questions a real employee would ask: Why me? What is the severance? What about my projects? Can I say goodbye to the team? What do I tell my family?',
-            'Show emotion but stay professional — do not become hostile. Gradually move toward acceptance.',
-            'Keep responses concise and natural — this is a real conversation, not a monologue.'
+            'YOU ARE: Rachel Kim, VP of Engineering at TechCorp — a 200-person SaaS company that has been an AWS customer for 3 years. Your team is actively evaluating a move to Google Cloud.',
+            'The USER is an AWS Customer Success Manager who requested this urgent call after learning your renewal is at risk.',
+            'You have legitimate grievances: (1) Support response times degraded over the past 6 months. (2) Your AWS bill increased 40% without a clear explanation. (3) A migration project stalled because the AWS professional services team was unresponsive. (4) Your team finds GCP pricing more predictable and their support more responsive.',
+            'You are NOT hostile, but you are serious about potentially leaving. Renewal decision must be made within 30 days.',
+            'Raise your concerns naturally throughout the conversation. If the CSM addresses them well with concrete solutions, soften your position slightly. If answers are vague, push back: "We have heard that before — what specifically will change this time?"',
+            'Open by acknowledging the call but making clear you are pressed for time and want to discuss specific issues, not hear a sales pitch.',
+            'Stay in character as a busy, technically-minded VP who values concrete commitments over promises. Keep responses concise and pointed.'
         ]
     },
 
@@ -325,7 +311,7 @@ const state = {
     /** @type {Object|null} DPP selected from scenario picker */
     selectedDPP: null,
 
-    /** @type {string|null} Key of selected scenario: 'layoff', 'salesTraining', 'ctoProspect' */
+    /** @type {string|null} Key of selected scenario: 'churnPrevention', 'salesTraining', 'ctoProspect' */
     selectedScenarioKey: null,
 
     /**
@@ -1601,7 +1587,7 @@ async function generateScenarioReport() {
     const transcript = state.sdk?.getTranscript() || [];
 
     // Wrap everything — this function must always return a renderable object
-    const fail = (reason) => ({ scenarioKey: scenarioKey || 'layoff', data: null, error: reason, transcript });
+    const fail = (reason) => ({ scenarioKey: scenarioKey || 'churnPrevention', data: null, error: reason, transcript });
 
     if (!state.sdk)        return fail('Session not available.');
     if (!scenarioKey)      return fail('No scenario was selected.');
@@ -1611,11 +1597,11 @@ async function generateScenarioReport() {
         : '(no speech was recorded for this session)';
 
     const prompts = {
-        layoff: {
-            system: `You are an expert HR coach analyzing a manager's performance during a layoff conversation. Output ONLY valid JSON, no markdown, no explanation.
-Even if the conversation was very short, still provide scores and at least one coaching tip.
-Schema: {"overall_score":0-100,"dimensions":{"empathy":{"score":1-5,"note":"str"},"clarity":{"score":1-5,"note":"str"},"composure":{"score":1-5,"note":"str"},"completeness":{"score":1-5,"note":"str"}},"key_moments":["str"],"coaching_tips":["str"],"summary":"2-3 sentences"}`,
-            user: `Analyze this layoff conversation. The User was the manager; Avatar was the employee being laid off.\n\n${transcriptText}\n\nOutput the JSON assessment.`
+        churnPrevention: {
+            system: `You are a customer success performance coach analyzing how well a CSM handled a churn prevention call. Output ONLY valid JSON, no markdown, no explanation.
+Even if the call was very short, still provide scores and at least one recommendation.
+Schema: {"retention_likelihood":0-100,"concerns":[{"concern":"str","addressed":"yes|partial|no","note":"str"}],"dimensions":{"rapport":{"score":1-5,"note":"str"},"problem_solving":{"score":1-5,"note":"str"},"value_articulation":{"score":1-5,"note":"str"},"follow_through":{"score":1-5,"note":"str"}},"wins":["str"],"missed":["str"],"summary":"2-3 sentences"}`,
+            user: `Analyze this churn prevention call. Avatar was Rachel Kim (VP of Engineering, at-risk customer); User was the AWS Customer Success Manager.\nRachel's known concerns: (1) Degraded support response times, (2) Unexplained 40% bill increase, (3) Unresponsive professional services team, (4) GCP as an active alternative.\n\n${transcriptText}\n\nOutput the JSON assessment.`
         },
         salesTraining: {
             system: `You are an AWS sales training assessor. Output ONLY valid JSON, no markdown, no explanation.
@@ -1706,7 +1692,7 @@ function renderReport(report) {
                     <div class="report-error-transcript">${transcriptHtml}</div>
                 </div>
             </div>`;
-    } else if (scenarioKey === 'layoff')             html = renderLayoffReport(data);
+    } else if (scenarioKey === 'churnPrevention')    html = renderChurnReport(data);
     else if (scenarioKey === 'salesTraining') html = renderSalesReport(data);
     else if (scenarioKey === 'ctoProspect')   html = renderCTOReport(data);
 
@@ -1794,43 +1780,62 @@ function verdictBadge(v) {
     return `<span class="verdict-badge ${cls}">${label}</span>`;
 }
 
-/** Render layoff coaching report */
-function renderLayoffReport(d) {
+/** Render churn prevention coaching report */
+function renderChurnReport(d) {
     const dims = d.dimensions || {};
+    const concerns = d.concerns || [];
     return `
-        <div class="report-header report-header--separation">
+        <div class="report-header report-header--churn">
             <div class="report-title-group">
-                <div class="report-badge">Separation Scenario</div>
-                <h2 class="report-title">Manager Communication Assessment</h2>
-                <p class="report-subtitle">How effectively did you deliver the layoff message?</p>
+                <div class="report-badge">Churn Prevention</div>
+                <h2 class="report-title">Customer Success Assessment</h2>
+                <p class="report-subtitle">How effectively did you retain Rachel Kim's business?</p>
             </div>
-            ${scoreRing(d.overall_score || 0, 'Overall Score', '#FF9900')}
+            ${scoreRing(d.retention_likelihood || 0, 'Retention Likelihood', '#FF9900')}
         </div>
 
         <div class="report-body">
+            ${concerns.length ? `
             <div class="report-section">
-                <h3 class="report-section-title">Communication Dimensions</h3>
-                ${dimBar('Empathy',      dims.empathy?.score     || 0, dims.empathy?.note)}
-                ${dimBar('Clarity',      dims.clarity?.score     || 0, dims.clarity?.note)}
-                ${dimBar('Composure',    dims.composure?.score   || 0, dims.composure?.note)}
-                ${dimBar('Completeness', dims.completeness?.score || 0, dims.completeness?.note)}
+                <h3 class="report-section-title">Customer Concerns Checklist</h3>
+                <div class="concern-list">
+                    ${concerns.map(c => `
+                    <div class="concern-row">
+                        <div class="concern-top">
+                            <span class="concern-icon">${c.addressed === 'yes' ? '&#10003;' : c.addressed === 'partial' ? '&#126;' : '&#10005;'}</span>
+                            <span class="concern-name">${escapeHtml(c.concern)}</span>
+                            ${verdictBadge(c.addressed)}
+                        </div>
+                        ${c.note ? `<div class="concern-note">${escapeHtml(c.note)}</div>` : ''}
+                    </div>`).join('')}
+                </div>
+            </div>` : ''}
+
+            <div class="report-section">
+                <h3 class="report-section-title">Performance Dimensions</h3>
+                ${dimBar('Rapport',           dims.rapport?.score          || 0, dims.rapport?.note)}
+                ${dimBar('Problem Solving',   dims.problem_solving?.score  || 0, dims.problem_solving?.note)}
+                ${dimBar('Value Articulation',dims.value_articulation?.score || 0, dims.value_articulation?.note)}
+                ${dimBar('Follow-Through',    dims.follow_through?.score   || 0, dims.follow_through?.note)}
             </div>
 
-            ${d.key_moments?.length ? `
-            <div class="report-section">
-                <h3 class="report-section-title">Key Moments</h3>
-                <ul class="report-list report-list--moments">
-                    ${d.key_moments.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
-                </ul>
-            </div>` : ''}
+            <div class="report-two-col">
+                ${d.wins?.length ? `
+                <div class="report-section">
+                    <h3 class="report-section-title">Key Wins</h3>
+                    <ul class="report-list report-list--strengths">
+                        ${d.wins.map(w => `<li>${escapeHtml(w)}</li>`).join('')}
+                    </ul>
+                </div>` : ''}
 
-            ${d.coaching_tips?.length ? `
-            <div class="report-section">
-                <h3 class="report-section-title">Coaching Tips</h3>
-                <ul class="report-list report-list--tips">
-                    ${d.coaching_tips.map(t => `<li>${escapeHtml(t)}</li>`).join('')}
-                </ul>
-            </div>` : ''}
+                ${d.missed?.length ? `
+                <div class="report-section">
+                    <h3 class="report-section-title">Missed Opportunities</h3>
+                    <ul class="report-list report-list--gaps">
+                        ${d.missed.map(m => `<li>${escapeHtml(m)}</li>`).join('')}
+                    </ul>
+                </div>` : ''}
+            </div>
 
             ${d.summary ? `
             <div class="report-section report-section--summary">
@@ -2014,7 +2019,7 @@ function attachEventListeners() {
     document.querySelectorAll('.scenario-pick-card').forEach(card => {
         card.addEventListener('click', () => {
             const id = card.dataset.scenario;
-            const dppKey = { layoff: 'layoff', 'sales-training': 'salesTraining', 'cto-prospect': 'ctoProspect' }[id];
+            const dppKey = { 'churn-prevention': 'churnPrevention', 'sales-training': 'salesTraining', 'cto-prospect': 'ctoProspect' }[id];
             if (!dppKey) return;
 
             // Highlight selected card
