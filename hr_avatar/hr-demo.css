@@ -1759,20 +1759,3 @@ a:hover {
     font-size: 12px;
     opacity: 0.85;
 }
-
-/* End Session Button */
-.aws-btn-end-session {
-    background: #d13212;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 24px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.3px;
-    transition: background 0.15s;
-}
-.aws-btn-end-session:hover {
-    background: #b22811;
-}

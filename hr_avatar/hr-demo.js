@@ -407,11 +407,7 @@ function initUI() {
 
         // Report overlay
         reportOverlay: document.getElementById('report-overlay'),
-        reportOverlayInner: document.getElementById('report-overlay-inner'),
-
-        // End session button
-        endSessionBar: document.getElementById('end-session-bar'),
-        endSessionBtn: document.getElementById('end-session-btn')
+        reportOverlayInner: document.getElementById('report-overlay-inner')
     };
 }
 
@@ -608,7 +604,6 @@ async function handleCallEnd() {
 
     console.log('[handleCallEnd] Processing end of call');
     state.isConversationActive = false; // Lock against re-entry
-    if (ui.endSessionBar) ui.endSessionBar.style.display = 'none';
 
     // End the SDK
     if (state.sdk) state.sdk.end();
@@ -1052,7 +1047,6 @@ function setCVUploadDisabled(disabled) {
  */
 async function startConversation() {
     state.isConversationActive = true;
-    if (ui.endSessionBar) ui.endSessionBar.style.display = 'block';
     setEditableFieldsDisabled(true);
     setCVUploadDisabled(true);
 
@@ -1335,7 +1329,6 @@ function resetToInitialState() {
     if (ui.scenarioPickerAction) ui.scenarioPickerAction.style.display = 'none';
     if (ui.scenarioPicker) ui.scenarioPicker.style.display = 'block';
 
-    if (ui.endSessionBar) ui.endSessionBar.style.display = 'none';
     hideReportOverlay();
 
     // Reset status
@@ -2045,10 +2038,12 @@ function attachEventListeners() {
         startConversation();
     });
 
-    // End session & get report button
-    ui.endSessionBtn?.addEventListener('click', async () => {
-        if (state.isConversationActive || state.isEndingCall) {
-            await handleCallEnd();
+    // Detect when user clicks the Kaltura "Leave" button (injected dynamically by SDK)
+    document.addEventListener('click', async (e) => {
+        if (e.target?.id === 'leaveRoomBtn' || e.target?.closest('#leaveRoomBtn')) {
+            if (state.isConversationActive || state.isEndingCall) {
+                await handleCallEnd();
+            }
         }
     });
 }
