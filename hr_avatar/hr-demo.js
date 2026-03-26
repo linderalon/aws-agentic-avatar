@@ -407,7 +407,11 @@ function initUI() {
 
         // Report overlay
         reportOverlay: document.getElementById('report-overlay'),
-        reportOverlayInner: document.getElementById('report-overlay-inner')
+        reportOverlayInner: document.getElementById('report-overlay-inner'),
+
+        // End session button
+        endSessionBar: document.getElementById('end-session-bar'),
+        endSessionBtn: document.getElementById('end-session-btn')
     };
 }
 
@@ -559,7 +563,22 @@ function checkForCallEndTrigger(text) {
         'wrapping up the call',
         'wrapping up now',
         'goodbye and take care',
-        'thank you for your time today'
+        'thank you for your time today',
+        'this concludes our',
+        'that concludes our',
+        'take care of yourself',
+        'wish you all the best',
+        'wishing you all the best',
+        'best of luck',
+        'good luck in',
+        'have a good day',
+        'have a great day',
+        'goodbye for now',
+        'signing off',
+        'our session is now complete',
+        'our conversation is now complete',
+        'session is complete',
+        'call is complete'
     ];
 
     const shouldEndCall = endCallPhrases.some(phrase => lowerText.includes(phrase));
@@ -589,6 +608,7 @@ async function handleCallEnd() {
 
     console.log('[handleCallEnd] Processing end of call');
     state.isConversationActive = false; // Lock against re-entry
+    if (ui.endSessionBar) ui.endSessionBar.style.display = 'none';
 
     // End the SDK
     if (state.sdk) state.sdk.end();
@@ -1032,6 +1052,7 @@ function setCVUploadDisabled(disabled) {
  */
 async function startConversation() {
     state.isConversationActive = true;
+    if (ui.endSessionBar) ui.endSessionBar.style.display = 'block';
     setEditableFieldsDisabled(true);
     setCVUploadDisabled(true);
 
@@ -1314,6 +1335,7 @@ function resetToInitialState() {
     if (ui.scenarioPickerAction) ui.scenarioPickerAction.style.display = 'none';
     if (ui.scenarioPicker) ui.scenarioPicker.style.display = 'block';
 
+    if (ui.endSessionBar) ui.endSessionBar.style.display = 'none';
     hideReportOverlay();
 
     // Reset status
@@ -2021,6 +2043,13 @@ function attachEventListeners() {
         if (ui.scenarioPicker) ui.scenarioPicker.style.display = 'none';
         ui.avatarContainer.style.display = 'flex';
         startConversation();
+    });
+
+    // End session & get report button
+    ui.endSessionBtn?.addEventListener('click', async () => {
+        if (state.isConversationActive || state.isEndingCall) {
+            await handleCallEnd();
+        }
     });
 }
 
