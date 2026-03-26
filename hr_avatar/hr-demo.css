@@ -408,60 +408,38 @@ a:hover {
     margin-bottom: 28px;
 }
 
-/* Animated gradient border via conic-gradient */
-@property --ga {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
-}
-
-@keyframes spin-border {
-    to { --ga: 360deg; }
-}
-
 /* ── Card shell ── */
 .scenario-pick-card {
     background: var(--aws-white);
     border: 1px solid var(--aws-border);
     border-radius: 10px;
-    overflow: visible;
+    overflow: hidden;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    transition: box-shadow 0.18s ease, transform 0.12s ease, border-color 0.18s ease;
+    transition: box-shadow 0.4s ease, transform 0.15s ease, border-color 0.25s ease;
     position: relative;
-    z-index: 0;
-}
-
-.scenario-pick-card::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 12px;
-    background: conic-gradient(from var(--ga), #93c5fd 0%, #818cf8 30%, #c084fc 60%, #93c5fd 100%);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
-}
-
-.scenario-pick-card:hover::before,
-.scenario-pick-card.active::before {
-    opacity: 1;
-    animation: spin-border 4s linear infinite;
 }
 
 .scenario-pick-card:hover {
-    box-shadow: 0 8px 28px rgba(129, 140, 248, 0.2);
     transform: translateY(-3px);
-    border-color: transparent;
+    border-color: rgba(147, 112, 219, 0.2);
+    box-shadow:
+        0 0 30px rgba(147, 112, 219, 0.38),
+        0 0 55px rgba(96, 165, 250, 0.25),
+        -8px  8px 45px rgba(192, 132, 252, 0.22),
+         8px -8px 45px rgba(96,  179, 255, 0.22);
 }
 
 /* Selected state */
 .scenario-pick-card.active {
-    border-color: transparent;
-    box-shadow: 0 8px 28px rgba(129, 140, 248, 0.25);
+    border-color: rgba(129, 140, 248, 0.25);
     transform: translateY(-3px);
+    box-shadow:
+        0 0 30px rgba(147, 112, 219, 0.42),
+        0 0 60px rgba(96, 165, 250, 0.28),
+        -8px  8px 48px rgba(192, 132, 252, 0.26),
+         8px -8px 48px rgba(96,  179, 255, 0.26);
 }
 
 /* ── Top visual area ── */
@@ -469,7 +447,6 @@ a:hover {
     position: relative;
     height: 180px;
     overflow: hidden;
-    border-radius: 10px 10px 0 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -500,21 +477,6 @@ a:hover {
     background-position: center;
 }
 
-/* Hover gradient overlay — purple → light blue */
-.spc-visual::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(90, 40, 200, 0.72) 0%, rgba(60, 170, 255, 0.65) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1;
-}
-
-.scenario-pick-card:hover .spc-visual::after,
-.scenario-pick-card.active .spc-visual::after {
-    opacity: 1;
-}
 
 /* Badge overlaid on the image — frosted glass pill */
 .spc-badge {
