@@ -33,7 +33,7 @@ const CONFIG = Object.freeze({
 
     // Delay (ms) after SHOWING_AGENT before injecting DPP
     // This ensures the avatar is fully ready to receive context
-    DPP_INJECTION_DELAY_MS: 500,
+    DPP_INJECTION_DELAY_MS: 0,
 
     // Avatar display name
     AVATAR_NAME: 'Nora (HR)',
@@ -1361,8 +1361,8 @@ function addTranscriptEntry(type, speaker, text) {
     ui.transcriptContent.appendChild(entry);
     ui.transcriptContent.scrollTop = ui.transcriptContent.scrollHeight;
 
-    // Enable download buttons
-    updateDownloadButtons();
+    // Enable download buttons on first entry only
+    if (ui.downloadBtn?.disabled) updateDownloadButtons();
 }
 
 /**
@@ -2057,6 +2057,7 @@ document.addEventListener('DOMContentLoaded', () => {
     attachEventListeners();
     renderScenarios();
     initSDK();
+    state.sdk.init(); // Pre-initialize immediately (synchronous with hardcoded talkUrl)
     // Hide avatar container until a scenario is chosen
     ui.avatarContainer.style.display = 'none';
 });
