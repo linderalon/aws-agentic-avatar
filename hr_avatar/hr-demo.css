@@ -423,23 +423,23 @@ a:hover {
 
 .scenario-pick-card:hover {
     transform: translateY(-3px);
-    border-color: rgba(147, 112, 219, 0.2);
+    border-color: rgba(96, 165, 250, 0.3);
     box-shadow:
         0 0 30px rgba(147, 112, 219, 0.38),
-        0 0 55px rgba(96, 165, 250, 0.25),
+        0 0 55px rgba(96, 165, 250, 0.55),
         -8px  8px 45px rgba(192, 132, 252, 0.22),
-         8px -8px 45px rgba(96,  179, 255, 0.22);
+         8px -8px 45px rgba(96,  179, 255, 0.50);
 }
 
 /* Selected state */
 .scenario-pick-card.active {
-    border-color: rgba(129, 140, 248, 0.25);
+    border-color: rgba(96, 165, 250, 0.35);
     transform: translateY(-3px);
     box-shadow:
         0 0 30px rgba(147, 112, 219, 0.42),
-        0 0 60px rgba(96, 165, 250, 0.28),
+        0 0 60px rgba(96, 165, 250, 0.58),
         -8px  8px 48px rgba(192, 132, 252, 0.26),
-         8px -8px 48px rgba(96,  179, 255, 0.26);
+         8px -8px 48px rgba(96,  179, 255, 0.52);
 }
 
 /* ── Top visual area ── */
