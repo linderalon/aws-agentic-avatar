@@ -464,7 +464,9 @@ a:hover {
 }
 
 .spc-visual--churn {
-    background: linear-gradient(135deg, #0d2040 0%, #1a3a6b 50%, #0f5c8a 100%);
+    background-image: url('https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/getting-started/approved/images/ww4vg2xb-evs-get-started-1.86a6a9cd936bf3f3cb6e2041aa8225cc385a6059.png');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Hover gradient overlay — purple → light blue */
